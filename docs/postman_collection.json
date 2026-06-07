@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Test API - Catalogue (Produits & Catégories)",
+    "description": "Collection de test de l'API. Variable {{base}} = http://localhost:8000/api.\n\nNote upload en édition : PHP ne lit pas le multipart sur une requête PUT. On utilise donc POST + un champ form-data `_method=PUT` (method spoofing Laravel).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base", "value": "http://localhost:8000/api" }
+  ],
+  "item": [
+    {
+      "name": "Catégories",
+      "item": [
+        {
+          "name": "Lister les catégories (+ nb produits en ligne)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/categories", "host": ["{{base}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Détail d'une catégorie (+ nb produits en ligne)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/categories/1", "host": ["{{base}}"], "path": ["categories", "1"] }
+          }
+        },
+        {
+          "name": "Créer une catégorie",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Ma nouvelle catégorie", "type": "text" },
+                { "key": "status", "value": "online", "type": "text", "description": "online | disabled | archived" },
+                { "key": "image", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{base}}/categories", "host": ["{{base}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Éditer une catégorie (POST + _method=PUT)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "_method", "value": "PUT", "type": "text" },
+                { "key": "name", "value": "Catégorie modifiée", "type": "text" },
+                { "key": "status", "value": "disabled", "type": "text", "description": "online | disabled | archived" },
+                { "key": "image", "type": "file", "src": [], "disabled": true, "description": "Optionnel : laisser vide pour garder l'image actuelle" }
+              ]
+            },
+            "url": { "raw": "{{base}}/categories/1", "host": ["{{base}}"], "path": ["categories", "1"] }
+          }
+        },
+        {
+          "name": "Supprimer une catégorie",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/categories/1", "host": ["{{base}}"], "path": ["categories", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produits",
+      "item": [
+        {
+          "name": "Lister les produits",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/products", "host": ["{{base}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Lister les produits filtrés par catégorie",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base}}/products?category_id=1",
+              "host": ["{{base}}"],
+              "path": ["products"],
+              "query": [{ "key": "category_id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Détail d'un produit",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/products/1", "host": ["{{base}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Créer un produit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Mon produit", "type": "text" },
+                { "key": "price", "value": "19.99", "type": "text" },
+                { "key": "status", "value": "online", "type": "text", "description": "online | draft | disabled" },
+                { "key": "category_id", "value": "1", "type": "text" },
+                { "key": "image", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{base}}/products", "host": ["{{base}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Éditer un produit (POST + _method=PUT)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "_method", "value": "PUT", "type": "text" },
+                { "key": "name", "value": "Produit modifié", "type": "text" },
+                { "key": "price", "value": "49.50", "type": "text" },
+                { "key": "status", "value": "draft", "type": "text", "description": "online | draft | disabled" },
+                { "key": "category_id", "value": "2", "type": "text" },
+                { "key": "image", "type": "file", "src": [], "disabled": true, "description": "Optionnel : laisser vide pour garder l'image actuelle" }
+              ]
+            },
+            "url": { "raw": "{{base}}/products/1", "host": ["{{base}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Supprimer un produit",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base}}/products/1", "host": ["{{base}}"], "path": ["products", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}
